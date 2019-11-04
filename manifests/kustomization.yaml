@@ -1,7 +1,7 @@
 namespace: kube-system
 
 resources:
-  - crd/vegeta.k8s.io_attacks.yaml
+  - crd/vegeta.kaidotdev.github.io_attacks.yaml
   # +kubebuilder:scaffold:crdkustomizeresource
   - cluster_role.yaml
   - cluster_role_binding.yaml

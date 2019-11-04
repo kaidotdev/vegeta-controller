@@ -34,7 +34,7 @@ rules:
     verbs:
       - get
   - apiGroups:
-      - vegeta.k8s.io
+      - vegeta.kaidotdev.github.io
     resources:
       - attacks
     verbs:
@@ -46,7 +46,7 @@ rules:
       - update
       - watch
   - apiGroups:
-      - vegeta.k8s.io
+      - vegeta.kaidotdev.github.io
     resources:
       - attacks/status
     verbs:

@@ -4,9 +4,9 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   creationTimestamp: null
-  name: attacks.vegeta.k8s.io
+  name: attacks.vegeta.kaidotdev.github.io
 spec:
-  group: vegeta.k8s.io
+  group: vegeta.kaidotdev.github.io
   names:
     kind: Attack
     listKind: AttackList

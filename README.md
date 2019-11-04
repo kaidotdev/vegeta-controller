@@ -1,7 +1,5 @@
 # VegetaController
 
-:construction: **This repository is under development.**
-
 VegetaController is Kubernetes Custom Controller that allows distributed execution of [tsenart/vegeta](https://github.com/tsenart/vegeta).
 
 ## Installation
@@ -16,7 +14,7 @@ Applying the following manifest enables distributed execution of vegeta.
 
 ```shell
 $ cat <<EOS | kubectl apply -f -
-apiVersion: vegeta.k8s.io/v1
+apiVersion: vegeta.kaidotdev.github.io/v1
 kind: Attack
 metadata:
   name: attack-sample
@@ -41,7 +39,7 @@ attack-sample-job-z879t          1/1     Running   0          13s
 You can also specify vegeta options via manifest,
 
 ```yaml
-apiVersion: vegeta.k8s.io/v1
+apiVersion: vegeta.kaidotdev.github.io/v1
 kind: Attack
 metadata:
   name: attack-sample
@@ -62,7 +60,7 @@ spec:
 if you are using istio etc., you can control their sidecar through pod annotation.
 
 ```yaml
-apiVersion: vegeta.k8s.io/v1
+apiVersion: vegeta.kaidotdev.github.io/v1
 kind: Attack
 metadata:
   name: attack-sample
