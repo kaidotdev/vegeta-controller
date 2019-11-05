@@ -34,6 +34,25 @@ attack-sample-job   0/1 of 2      10s        10s
 $ kubectl get pod | grep attack-sample
 attack-sample-job-7487s          1/1     Running   0          13s
 attack-sample-job-z879t          1/1     Running   0          13s
+
+$ kubectl logs attack-sample-job-7487s
+Requests      [total, rate, throughput]  500, 50.10, 38.51
+Duration      [total, attack, wait]      12.984487191s, 9.979884149s, 3.004603042s
+Latencies     [mean, 50, 95, 99, max]    2.003985261s, 2.081863241s, 3.005786028s, 3.02320498s, 3.053911426s
+Bytes In      [total, mean]              121500, 243.00
+Bytes Out     [total, mean]              0, 0.00
+Success       [ratio]                    100.00%
+Status Codes  [code:count]               200:500
+Error Set:
+$ kubectl logs attack-sample-job-z879t
+Requests      [total, rate, throughput]  500, 50.10, 38.51
+Duration      [total, attack, wait]      12.982401798s, 9.979968589s, 3.002433209s
+Latencies     [mean, 50, 95, 99, max]    2.002969191s, 2.068438165s, 3.004653479s, 3.01070406s, 3.032810373s
+Bytes In      [total, mean]              121500, 243.00
+Bytes Out     [total, mean]              0, 0.00
+Success       [ratio]                    100.00%
+Status Codes  [code:count]               200:500
+Error Set:
 ```
 
 You can also specify vegeta options via manifest,
