@@ -97,6 +97,8 @@ spec:
         sidecar.istio.io/inject: "true"
 ```
 
+See CRD for other available fields and detailed descriptions: [vegeta.kaidotdev.github.io_attacks.yaml](https://github.com/kaidotdev/vegeta-controller/blob/master/manifests/crd/vegeta.kaidotdev.github.io_attacks.yaml)
+
 ## How to develop
 
 ### Generate CRD from controller-gen
