@@ -96,3 +96,11 @@ spec:
       annotations:
         sidecar.istio.io/inject: "true"
 ```
+
+## How to develop
+
+### Generate CRD from controller-gen
+
+```sh
+$ make gen
+```

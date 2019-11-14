@@ -15,7 +15,7 @@ spec:
   scope: ""
   validation:
     openAPIV3Schema:
-      description: Attack is the Schema for the attacks API
+      description: Attack is the schema for the attacks API
       properties:
         apiVersion:
           description: 'APIVersion defines the versioned schema of this representation
