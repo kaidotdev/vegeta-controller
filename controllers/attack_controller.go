@@ -130,6 +130,14 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 		labels[k] = v
 	}
 
+	var hostAliases []v1.HostAlias
+	for _, hostAlias := range attack.Spec.Template.Spec.HostAliases {
+		hostAliases = append(hostAliases, v1.HostAlias{
+			IP: hostAlias.IP,
+			Hostnames: hostAlias.Hostnames,
+		})
+	}
+
 	var options []string
 	if attack.Spec.Option.Duration != "" {
 		options = append(options, fmt.Sprintf("-duration %s", attack.Spec.Option.Duration))
@@ -184,6 +192,7 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 							},
 						},
 					},
+					HostAliases: hostAliases,
 					Containers: []v1.Container{
 						{
 							Name:    "vegeta",
