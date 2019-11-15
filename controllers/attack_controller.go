@@ -74,25 +74,48 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, err
 	}
 
-	configMap := r.buildConfigMap(attack)
+	scenarioConfigMap := r.buildScenarioConfigMap(attack)
 
-	var foundConfigMap v1.ConfigMap
+	var foundScenarioConfigMap v1.ConfigMap
 	if err := r.Client.Get(
 		ctx,
 		client.ObjectKey{
 			Namespace: req.Namespace,
 			Name:      req.Name + "-scenario",
 		},
-		&foundConfigMap,
+		&foundScenarioConfigMap,
 	); errors.IsNotFound(err) {
-		if err := controllerutil.SetControllerReference(attack, configMap, r.Scheme); err != nil {
+		if err := controllerutil.SetControllerReference(attack, scenarioConfigMap, r.Scheme); err != nil {
 			return ctrl.Result{}, err
 		}
-		if err := r.Create(ctx, configMap); err != nil {
+		if err := r.Create(ctx, scenarioConfigMap); err != nil {
 			return ctrl.Result{}, err
 		}
-		r.Recorder.Eventf(attack, coreV1.EventTypeNormal, "SuccessfulCreated", "Created config map: %q", configMap.Name)
-		logger.V(1).Info("create", "config map", configMap)
+		r.Recorder.Eventf(attack, coreV1.EventTypeNormal, "SuccessfulCreated", "Created scenario config map: %q", scenarioConfigMap.Name)
+		logger.V(1).Info("create", "scenario config map", scenarioConfigMap)
+	} else if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	nsswitchConfigMap := r.buildNSSwitchConfigMap(attack)
+
+	var foundNSSwitchConfigMap v1.ConfigMap
+	if err := r.Client.Get(
+		ctx,
+		client.ObjectKey{
+			Namespace: req.Namespace,
+			Name:      req.Name + "-nsswitch",
+		},
+		&foundNSSwitchConfigMap,
+	); errors.IsNotFound(err) {
+		if err := controllerutil.SetControllerReference(attack, nsswitchConfigMap, r.Scheme); err != nil {
+			return ctrl.Result{}, err
+		}
+		if err := r.Create(ctx, nsswitchConfigMap); err != nil {
+			return ctrl.Result{}, err
+		}
+		r.Recorder.Eventf(attack, coreV1.EventTypeNormal, "SuccessfulCreated", "Created nsswitch config map: %q", nsswitchConfigMap.Name)
+		logger.V(1).Info("create", "nsswitch config map", nsswitchConfigMap)
 	} else if err != nil {
 		return ctrl.Result{}, err
 	}
@@ -100,7 +123,7 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	return ctrl.Result{}, nil
 }
 
-func (r *AttackReconciler) buildConfigMap(attack *vegetaV1.Attack) *v1.ConfigMap {
+func (r *AttackReconciler) buildScenarioConfigMap(attack *vegetaV1.Attack) *v1.ConfigMap {
 	return &v1.ConfigMap{
 		ObjectMeta: metaV1.ObjectMeta{
 			Name:      attack.Name + "-scenario",
@@ -108,6 +131,18 @@ func (r *AttackReconciler) buildConfigMap(attack *vegetaV1.Attack) *v1.ConfigMap
 		},
 		Data: map[string]string{
 			"scenario": attack.Spec.Scenario,
+		},
+	}
+}
+
+func (r *AttackReconciler) buildNSSwitchConfigMap(attack *vegetaV1.Attack) *v1.ConfigMap {
+	return &v1.ConfigMap{
+		ObjectMeta: metaV1.ObjectMeta{
+			Name:      attack.Name + "-nsswitch",
+			Namespace: attack.Namespace,
+		},
+		Data: map[string]string{
+			"nsswitch.conf": "hosts: files dns",
 		},
 	}
 }
@@ -133,7 +168,7 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 	var hostAliases []v1.HostAlias
 	for _, hostAlias := range attack.Spec.Template.Spec.HostAliases {
 		hostAliases = append(hostAliases, v1.HostAlias{
-			IP: hostAlias.IP,
+			IP:        hostAlias.IP,
 			Hostnames: hostAlias.Hostnames,
 		})
 	}
@@ -209,6 +244,11 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 									Name:      "scenario",
 									MountPath: "/var/lib/vegeta",
 								},
+								{
+									Name:      "nsswitch",
+									MountPath: "/etc/nsswitch.conf",
+									SubPath:   "nsswitch.conf",
+								},
 							},
 						},
 					},
@@ -219,6 +259,16 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 								ConfigMap: &v1.ConfigMapVolumeSource{
 									LocalObjectReference: v1.LocalObjectReference{
 										Name: attack.Name + "-scenario",
+									},
+								},
+							},
+						},
+						{
+							Name: "nsswitch",
+							VolumeSource: v1.VolumeSource{
+								ConfigMap: &v1.ConfigMapVolumeSource{
+									LocalObjectReference: v1.LocalObjectReference{
+										Name: attack.Name + "-nsswitch",
 									},
 								},
 							},
