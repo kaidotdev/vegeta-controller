@@ -29,7 +29,7 @@ spec:
                     - key: app
                       operator: In
                       values:
-                        - kube-outdated-image-exporter
+                        - vegeta-controller
                 topologyKey: kubernetes.io/hostname
               weight: 100
       containers:
