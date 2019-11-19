@@ -53,3 +53,9 @@ rules:
       - get
       - patch
       - update
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - patch
