@@ -318,7 +318,7 @@ func (r *AttackReconciler) cleanupOwnedResources(ctx context.Context, attack *ve
 	for _, configMap := range configMaps.Items {
 		configMap := configMap
 
-		if configMap.Name == attack.Name+"-scenario" {
+		if configMap.Name == attack.Name+"-scenario" || configMap.Name == attack.Name+"-nsswitch" {
 			continue
 		}
 
@@ -365,5 +365,6 @@ func (r *AttackReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&vegetaV1.Attack{}).
 		Owns(&batchV1.Job{}).
+		Owns(&v1.ConfigMap{}).
 		Complete(r)
 }
