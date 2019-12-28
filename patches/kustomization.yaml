@@ -1,0 +1,10 @@
+namespace: vegeta-controller
+
+bases:
+  - ../manifests
+
+resources:
+  - namespace.yaml
+
+patchesStrategicMerge:
+  - deployment.yaml
