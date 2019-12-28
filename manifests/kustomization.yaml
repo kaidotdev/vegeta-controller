@@ -1,3 +1,5 @@
+namespace: default
+
 resources:
   - crd/vegeta.kaidotdev.github.io_attacks.yaml
   # +kubebuilder:scaffold:crdkustomizeresource
