@@ -6,6 +6,7 @@ resources:
   - cluster_role.yaml
   - cluster_role_binding.yaml
   - deployment.yaml
+  - pod_disruption_budget.yaml
   - role.yaml
   - role_binding.yaml
   - service_account.yaml
