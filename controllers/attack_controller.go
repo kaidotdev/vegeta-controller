@@ -158,20 +158,15 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 		attack.Spec.Option.Duration = defaultDuration
 	}
 
+	appLabel := attack.Name + "-job"
+
 	labels := map[string]string{
-		"app": attack.Name + "-job",
+		"app": appLabel,
 	}
-	for k, v := range attack.Spec.Template.Metadata.Labels {
+	for k, v := range attack.Spec.Template.ObjectMeta.Labels {
 		labels[k] = v
 	}
-
-	var hostAliases []v1.HostAlias
-	for _, hostAlias := range attack.Spec.Template.Spec.HostAliases {
-		hostAliases = append(hostAliases, v1.HostAlias{
-			IP:        hostAlias.IP,
-			Hostnames: hostAlias.Hostnames,
-		})
-	}
+	attack.Spec.Template.ObjectMeta.Labels = labels
 
 	var options []string
 	if attack.Spec.Option.Duration != "" {
@@ -205,10 +200,7 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 		Spec: batchV1.JobSpec{
 			Parallelism: &attack.Spec.Parallelism,
 			Template: v1.PodTemplateSpec{
-				ObjectMeta: metaV1.ObjectMeta{
-					Annotations: attack.Spec.Template.Metadata.Annotations,
-					Labels:      labels,
-				},
+				ObjectMeta: attack.Spec.Template.ObjectMeta,
 				Spec: v1.PodSpec{
 					Affinity: &v1.Affinity{
 						PodAntiAffinity: &v1.PodAntiAffinity{
@@ -218,7 +210,7 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 									PodAffinityTerm: v1.PodAffinityTerm{
 										LabelSelector: &metaV1.LabelSelector{
 											MatchLabels: map[string]string{
-												"app": attack.Name + "-job",
+												"app": appLabel,
 											},
 										},
 										TopologyKey: "kubernetes.io/hostname",
@@ -227,7 +219,7 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 							},
 						},
 					},
-					HostAliases: hostAliases,
+					HostAliases: attack.Spec.Template.Spec.HostAliases,
 					Containers: []v1.Container{
 						{
 							Name:    "vegeta",
