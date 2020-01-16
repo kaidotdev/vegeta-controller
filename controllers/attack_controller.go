@@ -184,6 +184,9 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 	if attack.Spec.Option.Workers != 0 {
 		options = append(options, fmt.Sprintf("-workers %d", attack.Spec.Option.Workers))
 	}
+	if attack.Spec.Option.Format != "" {
+		options = append(options, fmt.Sprintf("-format %s", attack.Spec.Option.Format))
+	}
 
 	var vegetaImage string
 	if r.VegetaImage == "" {

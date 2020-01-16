@@ -65,8 +65,8 @@ metadata:
 spec:
   parallelism: 2
   scenario: |-
-    GET http://httpbin/delay/1
-    GET http://httpbin/delay/3
+    {"method":"GET","url":"http://httpbin/delay/1"}
+    {"method":"GET","url":"http://httpbin/delay/3"}
   output: text
   option:
     duration: 10s
@@ -74,6 +74,7 @@ spec:
     connections: 10000
     timeout: 10s
     workers: 10
+    format: json
 ```
 
 if you are using istio etc., you can control their sidecar through pod annotation.

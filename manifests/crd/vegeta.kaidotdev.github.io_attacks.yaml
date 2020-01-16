@@ -45,6 +45,13 @@ spec:
                     info: https://github.com/tsenart/vegeta#usage-manual'
                   pattern: ^\d+s$
                   type: string
+                format:
+                  description: 'Targets format [http, json] (default "http") More
+                    info: https://github.com/tsenart/vegeta#usage-manual'
+                  enum:
+                  - http
+                  - json
+                  type: string
                 rate:
                   description: 'Number of requests per time unit [0 = infinity] (default
                     50/1s) More info: https://github.com/tsenart/vegeta#usage-manual'
