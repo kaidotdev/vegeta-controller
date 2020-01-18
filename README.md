@@ -101,7 +101,25 @@ See CRD for other available fields and detailed descriptions: [vegeta.kaidotdev.
 
 ## How to develop
 
-### Generate CRD from controller-gen
+### `skaffold dev`
+
+```sh
+$ make dev
+```
+
+### Test
+
+```sh
+$ make test
+```
+
+### Lint
+
+```sh
+$ make lint
+```
+
+### Generate CRD from `*_types.go` by controller-gen
 
 ```sh
 $ make gen
