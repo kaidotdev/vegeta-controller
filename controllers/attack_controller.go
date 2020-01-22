@@ -130,7 +130,7 @@ func (r *AttackReconciler) buildScenarioConfigMap(attack *vegetaV1.Attack) *v1.C
 			Namespace: attack.Namespace,
 		},
 		Data: map[string]string{
-			"scenario": attack.Spec.Scenario,
+			"scenario": attack.Spec.Scenario + "\n", // vegeta needs line break
 		},
 	}
 }
