@@ -6,6 +6,8 @@ ENV CGO_ENABLED 0
 ENV GOOS linux
 ENV GOARCH amd64
 
+RUN apk update && apk upgrade
+
 WORKDIR /build/
 
 COPY go.mod go.sum /build/
