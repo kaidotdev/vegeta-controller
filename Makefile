@@ -11,9 +11,11 @@ test: ## Test
 
 .PHONY: lint
 lint: ## Lint
-	@go get golang.org/x/tools/cmd/goimports
+	@go get golang.org/x/tools/cmd/goimports@5916a50
+	@go get github.com/instrumenta/kubeval@0.14.0
 	@for d in $(shell go list -f {{.Dir}} ./...); do $(shell go env GOPATH)/bin/goimports -w $$d/*.go; done
 	@docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:v1.21.0 golangci-lint run --fix
+	@$(shell go env GOPATH)/bin/kubeval --strict --ignore-missing-schemas manifests/cluster_role.yaml manifests/cluster_role_binding.yaml manifests/deployment.yaml manifests/pod_disruption_budget.yaml manifests/role.yaml manifests/role_binding.yaml manifests/service_account.yaml
 
 .PHONY: dev
 dev: ## Run skaffold
