@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	jobOwnerKey        = ".metadata.controller"
+	ownerKey           = ".metadata.controller"
 	defaultParallelism = 1
 	defaultOutput      = "text"
 	defaultDuration    = "10s"
@@ -57,8 +57,8 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	if err := r.Client.Get(
 		ctx,
 		client.ObjectKey{
-			Namespace: req.Namespace,
 			Name:      req.Name + "-job",
+			Namespace: req.Namespace,
 		},
 		&foundJob,
 	); errors.IsNotFound(err) {
@@ -80,8 +80,8 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	if err := r.Client.Get(
 		ctx,
 		client.ObjectKey{
-			Namespace: req.Namespace,
 			Name:      req.Name + "-scenario",
+			Namespace: req.Namespace,
 		},
 		&foundScenarioConfigMap,
 	); errors.IsNotFound(err) {
@@ -103,8 +103,8 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	if err := r.Client.Get(
 		ctx,
 		client.ObjectKey{
-			Namespace: req.Namespace,
 			Name:      req.Name + "-nsswitch",
+			Namespace: req.Namespace,
 		},
 		&foundNSSwitchConfigMap,
 	); errors.IsNotFound(err) {
@@ -282,7 +282,7 @@ func (r *AttackReconciler) cleanupOwnedResources(ctx context.Context, attack *ve
 		ctx,
 		&jobs,
 		client.InNamespace(attack.Namespace),
-		client.MatchingFields{jobOwnerKey: attack.Name},
+		client.MatchingFields{ownerKey: attack.Name},
 	); err != nil {
 		return err
 	}
@@ -305,7 +305,7 @@ func (r *AttackReconciler) cleanupOwnedResources(ctx context.Context, attack *ve
 		ctx,
 		&configMaps,
 		client.InNamespace(attack.Namespace),
-		client.MatchingFields{jobOwnerKey: attack.Name},
+		client.MatchingFields{ownerKey: attack.Name},
 	); err != nil {
 		return err
 	}
@@ -327,7 +327,7 @@ func (r *AttackReconciler) cleanupOwnedResources(ctx context.Context, attack *ve
 }
 
 func (r *AttackReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	if err := mgr.GetFieldIndexer().IndexField(&batchV1.Job{}, jobOwnerKey, func(rawObj runtime.Object) []string {
+	if err := mgr.GetFieldIndexer().IndexField(&batchV1.Job{}, ownerKey, func(rawObj runtime.Object) []string {
 		job := rawObj.(*batchV1.Job)
 		owner := metaV1.GetControllerOf(job)
 		if owner == nil {
@@ -342,7 +342,7 @@ func (r *AttackReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		return err
 	}
 
-	if err := mgr.GetFieldIndexer().IndexField(&v1.ConfigMap{}, jobOwnerKey, func(rawObj runtime.Object) []string {
+	if err := mgr.GetFieldIndexer().IndexField(&v1.ConfigMap{}, ownerKey, func(rawObj runtime.Object) []string {
 		configMap := rawObj.(*v1.ConfigMap)
 		owner := metaV1.GetControllerOf(configMap)
 		if owner == nil {
