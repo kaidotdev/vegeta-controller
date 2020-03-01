@@ -20,7 +20,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 )
 
-var (
+const (
 	ownerKey           = ".metadata.controller"
 	defaultParallelism = 1
 	defaultOutput      = "text"
