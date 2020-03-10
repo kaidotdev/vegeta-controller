@@ -57,7 +57,7 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	if err := r.Client.Get(
 		ctx,
 		client.ObjectKey{
-			Name:      req.Name + "-job",
+			Name:      req.Name + "-attack",
 			Namespace: req.Namespace,
 		},
 		&foundJob,
@@ -158,7 +158,7 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 		attack.Spec.Option.Duration = defaultDuration
 	}
 
-	appLabel := attack.Name + "-job"
+	appLabel := attack.Name + "-attack"
 
 	labels := map[string]string{
 		"app": appLabel,
@@ -197,7 +197,7 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 
 	return &batchV1.Job{
 		ObjectMeta: metaV1.ObjectMeta{
-			Name:      attack.Name + "-job",
+			Name:      attack.Name + "-attack",
 			Namespace: attack.Namespace,
 		},
 		Spec: batchV1.JobSpec{
@@ -290,7 +290,7 @@ func (r *AttackReconciler) cleanupOwnedResources(ctx context.Context, attack *ve
 	for _, job := range jobs.Items {
 		job := job
 
-		if job.Name == attack.Name+"-job" {
+		if job.Name == attack.Name+"-attack" {
 			continue
 		}
 

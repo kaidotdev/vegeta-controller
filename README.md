@@ -17,7 +17,7 @@ $ cat <<EOS | kubectl apply -f -
 apiVersion: vegeta.kaidotdev.github.io/v1
 kind: Attack
 metadata:
-  name: attack-sample
+  name: sample
 spec:
   parallelism: 2
   scenario: |-
@@ -25,17 +25,17 @@ spec:
     GET http://httpbin/delay/3
   output: text
 EOS
-$ kubectl get attack attack-sample
+$ kubectl get attack sample
 NAME            AGE
-attack-sample   7s
-$ kubectl get job attack-sample-job
+sample   7s
+$ kubectl get job sample-attack
 NAME                COMPLETIONS   DURATION   AGE
-attack-sample-job   0/1 of 2      10s        10s
+sample-attack       0/1 of 2      10s        10s
 $ kubectl get pod | grep attack-sample
-attack-sample-job-7487s          1/1     Running   0          13s
-attack-sample-job-z879t          1/1     Running   0          13s
+sample-attack-7487s          1/1     Running   0          13s
+sample-attack-z879t          1/1     Running   0          13s
 
-$ kubectl logs -l app=attack-sample-job
+$ kubectl logs -l app=sample-attack
 Requests      [total, rate, throughput]  500, 50.10, 38.51
 Duration      [total, attack, wait]      12.984487191s, 9.979884149s, 3.004603042s
 Latencies     [mean, 50, 95, 99, max]    2.003985261s, 2.081863241s, 3.005786028s, 3.02320498s, 3.053911426s
@@ -60,7 +60,7 @@ You can also specify vegeta options via manifest,
 apiVersion: vegeta.kaidotdev.github.io/v1
 kind: Attack
 metadata:
-  name: attack-sample
+  name: sample
 spec:
   parallelism: 2
   scenario: |-
@@ -82,7 +82,7 @@ if you are using istio etc., you can control their sidecar through pod annotatio
 apiVersion: vegeta.kaidotdev.github.io/v1
 kind: Attack
 metadata:
-  name: attack-sample
+  name: sample
 spec:
   parallelism: 2
   scenario: |-
