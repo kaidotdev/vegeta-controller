@@ -51,21 +51,20 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, err
 	}
 
-	job := r.buildJob(attack)
-
-	var foundJob batchV1.Job
+	var job batchV1.Job
 	if err := r.Client.Get(
 		ctx,
 		client.ObjectKey{
 			Name:      req.Name + "-attack",
 			Namespace: req.Namespace,
 		},
-		&foundJob,
+		&job,
 	); errors.IsNotFound(err) {
-		if err := controllerutil.SetControllerReference(attack, job, r.Scheme); err != nil {
+		job = *r.buildJob(attack)
+		if err := controllerutil.SetControllerReference(attack, &job, r.Scheme); err != nil {
 			return ctrl.Result{}, err
 		}
-		if err := r.Create(ctx, job); err != nil {
+		if err := r.Create(ctx, &job); err != nil {
 			return ctrl.Result{}, err
 		}
 		r.Recorder.Eventf(attack, coreV1.EventTypeNormal, "SuccessfulCreated", "Created job: %q", job.Name)
@@ -74,21 +73,20 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, err
 	}
 
-	scenarioConfigMap := r.buildScenarioConfigMap(attack)
-
-	var foundScenarioConfigMap v1.ConfigMap
+	var scenarioConfigMap v1.ConfigMap
 	if err := r.Client.Get(
 		ctx,
 		client.ObjectKey{
 			Name:      req.Name + "-scenario",
 			Namespace: req.Namespace,
 		},
-		&foundScenarioConfigMap,
+		&scenarioConfigMap,
 	); errors.IsNotFound(err) {
-		if err := controllerutil.SetControllerReference(attack, scenarioConfigMap, r.Scheme); err != nil {
+		scenarioConfigMap = *r.buildScenarioConfigMap(attack)
+		if err := controllerutil.SetControllerReference(attack, &scenarioConfigMap, r.Scheme); err != nil {
 			return ctrl.Result{}, err
 		}
-		if err := r.Create(ctx, scenarioConfigMap); err != nil {
+		if err := r.Create(ctx, &scenarioConfigMap); err != nil {
 			return ctrl.Result{}, err
 		}
 		r.Recorder.Eventf(attack, coreV1.EventTypeNormal, "SuccessfulCreated", "Created scenario config map: %q", scenarioConfigMap.Name)
@@ -97,21 +95,20 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, err
 	}
 
-	nsswitchConfigMap := r.buildNSSwitchConfigMap(attack)
-
-	var foundNSSwitchConfigMap v1.ConfigMap
+	var nsswitchConfigMap v1.ConfigMap
 	if err := r.Client.Get(
 		ctx,
 		client.ObjectKey{
 			Name:      req.Name + "-nsswitch",
 			Namespace: req.Namespace,
 		},
-		&foundNSSwitchConfigMap,
+		&nsswitchConfigMap,
 	); errors.IsNotFound(err) {
-		if err := controllerutil.SetControllerReference(attack, nsswitchConfigMap, r.Scheme); err != nil {
+		nsswitchConfigMap = *r.buildNSSwitchConfigMap(attack)
+		if err := controllerutil.SetControllerReference(attack, &nsswitchConfigMap, r.Scheme); err != nil {
 			return ctrl.Result{}, err
 		}
-		if err := r.Create(ctx, nsswitchConfigMap); err != nil {
+		if err := r.Create(ctx, &nsswitchConfigMap); err != nil {
 			return ctrl.Result{}, err
 		}
 		r.Recorder.Eventf(attack, coreV1.EventTypeNormal, "SuccessfulCreated", "Created nsswitch config map: %q", nsswitchConfigMap.Name)
