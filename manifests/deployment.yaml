@@ -3,15 +3,15 @@ kind: Deployment
 metadata:
   name: vegeta-controller
 spec:
-  selector:
-    matchLabels:
-      app: vegeta-controller
   replicas: 4
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: vegeta-controller
   template:
     metadata:
       labels:
