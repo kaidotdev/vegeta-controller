@@ -40,7 +40,7 @@ func (in *Attack) DeepCopyObject() runtime.Object {
 func (in *AttackList) DeepCopyInto(out *AttackList) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	out.ListMeta = in.ListMeta
+	in.ListMeta.DeepCopyInto(&out.ListMeta)
 	if in.Items != nil {
 		in, out := &in.Items, &out.Items
 		*out = make([]Attack, len(*in))
