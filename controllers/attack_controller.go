@@ -22,9 +22,6 @@ import (
 
 const (
 	ownerKey           = ".metadata.controller"
-	defaultParallelism = 1
-	defaultOutput      = "text"
-	defaultDuration    = "10s"
 	defaultVegetaImage = "peterevans/vegeta:6.7"
 )
 
@@ -145,16 +142,7 @@ func (r *AttackReconciler) buildNSSwitchConfigMap(attack *vegetaV1.Attack) *v1.C
 }
 
 func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
-	if attack.Spec.Parallelism == 0 {
-		attack.Spec.Parallelism = int32(defaultParallelism)
-	}
-	if attack.Spec.Output == "" {
-		attack.Spec.Output = defaultOutput
-	}
-	if attack.Spec.Option.Duration == "" {
-		attack.Spec.Option.Duration = defaultDuration
-	}
-
+	fmt.Printf("%+v", attack.Spec)
 	appLabel := attack.Name + "-attack"
 
 	labels := map[string]string{

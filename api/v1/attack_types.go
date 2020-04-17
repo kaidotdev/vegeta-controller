@@ -7,13 +7,15 @@ import (
 
 // AttackSpec defines the desired state of Attack
 type AttackSpec struct {
-	// Parallelism of Attack (default 1)
+	// Parallelism of Attack
 	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:default=1
 	Parallelism int32 `json:"parallelism,omitempty"`
 	// Scenario of Attack
 	// More info: https://github.com/tsenart/vegeta#http-format
 	Scenario string `json:"scenario"`
 	// +kubebuilder:validation:Enum=text;json
+	// +kubebuilder:default=text
 	Output   string       `json:"output,omitempty"`
 	Option   VegetaOption `json:"option,omitempty"`
 	Template Template     `json:"template,omitempty"`
@@ -24,9 +26,10 @@ type AttackStatus struct{}
 
 // VegetaOption defines the vegeta options
 type VegetaOption struct {
-	// Duration of the test [0 = forever] (default 10s)
+	// Duration of the test [0 = forever]
 	// More info: https://github.com/tsenart/vegeta#usage-manual
 	// +kubebuilder:validation:Pattern=^\d+s$
+	// +kubebuilder:default="10s"
 	Duration string `json:"duration,omitempty"`
 	// Max open idle connections per target host (default 10000)
 	// More info: https://github.com/tsenart/vegeta#usage-manual

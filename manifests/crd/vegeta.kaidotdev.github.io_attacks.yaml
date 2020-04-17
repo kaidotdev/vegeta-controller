@@ -45,8 +45,8 @@ spec:
                     minimum: 1
                     type: integer
                   duration:
-                    description: 'Duration of the test [0 = forever] (default 10s)
-                      More info: https://github.com/tsenart/vegeta#usage-manual'
+                    default: 10s
+                    description: 'Duration of the test [0 = forever] More info: https://github.com/tsenart/vegeta#usage-manual'
                     pattern: ^\d+s$
                     type: string
                   format:
@@ -72,12 +72,14 @@ spec:
                     type: integer
                 type: object
               output:
+                default: text
                 enum:
                 - text
                 - json
                 type: string
               parallelism:
-                description: Parallelism of Attack (default 1)
+                default: 1
+                description: Parallelism of Attack
                 format: int32
                 minimum: 1
                 type: integer
