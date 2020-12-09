@@ -39,7 +39,7 @@ spec:
               weight: 100
       containers:
         - name: controller
-          image: docker.pkg.github.com/kaidotdev/vegeta-controller/vegeta-controller:v0.3.0
+          image: docker.pkg.github.com/kaidotdev/vegeta-controller/vegeta-controller:v0.3.1
           imagePullPolicy: Always
           args:
             - --metrics-addr=0.0.0.0:8080
