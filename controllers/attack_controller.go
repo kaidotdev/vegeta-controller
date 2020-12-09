@@ -219,6 +219,7 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 								attack.Spec.Output,
 							)},
 							ImagePullPolicy: v1.PullIfNotPresent,
+							Resources:       attack.Spec.AttackContainerSpec.Resources,
 							VolumeMounts: []v1.VolumeMount{
 								{
 									Name:      "scenario",

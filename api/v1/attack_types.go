@@ -16,9 +16,17 @@ type AttackSpec struct {
 	Scenario string `json:"scenario"`
 	// +kubebuilder:validation:Enum=text;json
 	// +kubebuilder:default=text
-	Output   string       `json:"output,omitempty"`
-	Option   VegetaOption `json:"option,omitempty"`
-	Template Template     `json:"template,omitempty"`
+	Output              string              `json:"output,omitempty"`
+	Option              VegetaOption        `json:"option,omitempty"`
+	Template            Template            `json:"template,omitempty"`
+	AttackContainerSpec AttackContainerSpec `json:"attackContainerSpec,omitempty"`
+}
+
+// Additional Spec for attack container.
+type AttackContainerSpec struct {
+	// Compute Resources required by this container.
+	// More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+	Resources v1.ResourceRequirements `json:"resources,omitempty" protobuf:"bytes,8,opt,name=resources"`
 }
 
 // AttackStatus defines the observed state of Attack
