@@ -87,6 +87,11 @@ spec:
                     - http
                     - json
                     type: string
+                  keepalive:
+                    default: true
+                    description: 'Use persistent connections (default true) More info:
+                      https://github.com/tsenart/vegeta#usage-manual'
+                    type: boolean
                   rate:
                     description: 'Number of requests per time unit [0 = infinity]
                       (default 50/1s) More info: https://github.com/tsenart/vegeta#usage-manual'

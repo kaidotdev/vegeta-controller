@@ -43,6 +43,10 @@ type VegetaOption struct {
 	// More info: https://github.com/tsenart/vegeta#usage-manual
 	// +kubebuilder:validation:Minimum=1
 	Connections int `json:"connections,omitempty"`
+	// Use persistent connections (default true)
+	// More info: https://github.com/tsenart/vegeta#usage-manual
+	// +kubebuilder:default=true
+	Keepalive bool `json:"keepalive,omitempty"`
 	// Number of requests per time unit [0 = infinity] (default 50/1s)
 	// More info: https://github.com/tsenart/vegeta#usage-manual
 	// +kubebuilder:validation:Minimum=1

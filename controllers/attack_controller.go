@@ -172,6 +172,9 @@ func (r *AttackReconciler) buildJob(attack *vegetaV1.Attack) *batchV1.Job {
 	if attack.Spec.Option.Format != "" {
 		options = append(options, fmt.Sprintf("-format %s", attack.Spec.Option.Format))
 	}
+	if !attack.Spec.Option.Keepalive {
+		options = append(options, "-keepalive false")
+	}
 
 	var vegetaImage string
 	if r.VegetaImage == "" {
