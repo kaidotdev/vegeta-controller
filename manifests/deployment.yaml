@@ -39,7 +39,7 @@ spec:
               weight: 100
       containers:
         - name: controller
-          image: ghcr.io/kaidotdev/vegeta-controller:v0.3.4
+          image: ghcr.io/kaidotdev/vegeta-controller:v0.3.5
           imagePullPolicy: Always
           args:
             - --metrics-addr=0.0.0.0:8080
