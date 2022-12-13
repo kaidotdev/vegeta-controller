@@ -31,7 +31,7 @@ sample   7s
 $ kubectl get job sample-attack
 NAME                COMPLETIONS   DURATION   AGE
 sample-attack       0/1 of 2      10s        10s
-$ kubectl get pod | grep attack-sample
+$ kubectl get pod | grep sample-attack
 sample-attack-7487s          1/1     Running   0          13s
 sample-attack-z879t          1/1     Running   0          13s
 
