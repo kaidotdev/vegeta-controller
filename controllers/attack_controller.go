@@ -61,7 +61,7 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		if err := controllerutil.SetControllerReference(attack, &job, r.Scheme); err != nil {
 			return ctrl.Result{}, err
 		}
-		if err := r.Create(ctx, &job); err != nil {
+		if err := r.Create(ctx, &job); err != nil && !errors.IsAlreadyExists(err) {
 			return ctrl.Result{}, err
 		}
 		r.Recorder.Eventf(attack, coreV1.EventTypeNormal, "SuccessfulCreated", "Created job: %q", job.Name)
@@ -83,7 +83,7 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		if err := controllerutil.SetControllerReference(attack, &scenarioConfigMap, r.Scheme); err != nil {
 			return ctrl.Result{}, err
 		}
-		if err := r.Create(ctx, &scenarioConfigMap); err != nil {
+		if err := r.Create(ctx, &scenarioConfigMap); err != nil && !errors.IsAlreadyExists(err) {
 			return ctrl.Result{}, err
 		}
 		r.Recorder.Eventf(attack, coreV1.EventTypeNormal, "SuccessfulCreated", "Created scenario config map: %q", scenarioConfigMap.Name)
@@ -105,7 +105,7 @@ func (r *AttackReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		if err := controllerutil.SetControllerReference(attack, &nsswitchConfigMap, r.Scheme); err != nil {
 			return ctrl.Result{}, err
 		}
-		if err := r.Create(ctx, &nsswitchConfigMap); err != nil {
+		if err := r.Create(ctx, &nsswitchConfigMap); err != nil && !errors.IsAlreadyExists(err) {
 			return ctrl.Result{}, err
 		}
 		r.Recorder.Eventf(attack, coreV1.EventTypeNormal, "SuccessfulCreated", "Created nsswitch config map: %q", nsswitchConfigMap.Name)
