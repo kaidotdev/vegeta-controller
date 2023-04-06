@@ -6,7 +6,7 @@ on:
 jobs:
   publish:
     name: Publish
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     env:
       OWNER: kaidotdev
       REPOSITORY_NAME: vegeta-controller
